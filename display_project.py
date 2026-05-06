@@ -21,9 +21,10 @@ ENTROPY_POS      = [0.10, -0.45, -0.12]
 GREEN = [0.1, 0.9, 0.1]
 RED   = [0.9, 0.1, 0.1]
 AMBER = [1.0, 0.75, 0.1]
-WHITE = [1.0, 1.0, 1.0]
-CYAN  = [0.3, 1.0, 1.0]
-GRAY  = [0.7, 0.7, 0.7]
+# Darker shades for readability against the bright sky / checkered floor
+WHITE = [0.05, 0.05, 0.05]   # was [1, 1, 1] — now near-black so bars are visible
+CYAN  = [0.0,  0.25, 0.65]   # was [0.3, 1, 1] — now a deep navy
+GRAY  = [0.20, 0.20, 0.20]   # was [0.7, 0.7, 0.7] — now dark gray
 
 
 def _bar(v, w=10):

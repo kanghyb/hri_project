@@ -159,31 +159,37 @@ def compute_accuracy(placements, theta_star):
 
 # ── goal text on screen ───────────────────────────────────────────────
 def add_goal_text(persona_name):
+    # Darker, more saturated colors so the right-column text reads clearly
+    # against the bright sky and white floor.
+    ROBOT_COLOR = [0.00, 0.25, 0.70]   # deep blue (was light cyan)
+    HUMAN_COLOR = [0.75, 0.25, 0.00]   # burnt orange (was light orange)
+    LEGEND_COLOR = [0.15, 0.15, 0.15]  # near-black (was light gray)
+
     p.addUserDebugText(
         "ROBOT: starts sorting by SIZE (wrong!)",
-        [0.30, 0.48, 0.30],
-        textColorRGB=[0.3, 0.8, 1.0], textSize=1.1)
+        [0.30, 0.48, 0.50],
+        textColorRGB=ROBOT_COLOR, textSize=1.1)
     p.addUserDebugText(
         "learns true preference from human corrections",
-        [0.30, 0.48, 0.24],
-        textColorRGB=[0.3, 0.8, 1.0], textSize=0.95)
+        [0.30, 0.48, 0.44],
+        textColorRGB=ROBOT_COLOR, textSize=0.95)
     p.addUserDebugText(
         f"HUMAN: wants to sort by {persona_name.upper()}",
-        [0.30, 0.48, 0.16],
-        textColorRGB=[1.0, 0.6, 0.2], textSize=1.1)
+        [0.30, 0.48, 0.36],
+        textColorRGB=HUMAN_COLOR, textSize=1.1)
     p.addUserDebugText(
         "overrides robot at the bin before release",
-        [0.30, 0.48, 0.10],
-        textColorRGB=[1.0, 0.6, 0.2], textSize=0.95)
+        [0.30, 0.48, 0.30],
+        textColorRGB=HUMAN_COLOR, textSize=0.95)
     p.addUserDebugText("Bin 1 = red / small / cube",
-                        [0.30, 0.48, 0.02],
-                        textColorRGB=[0.8, 0.8, 0.8], textSize=0.85)
+                        [0.30, 0.48, 0.22],
+                        textColorRGB=LEGEND_COLOR, textSize=0.85)
     p.addUserDebugText("Bin 2 = blue / medium / sphere",
-                        [0.30, 0.48, -0.04],
-                        textColorRGB=[0.8, 0.8, 0.8], textSize=0.85)
+                        [0.30, 0.48, 0.16],
+                        textColorRGB=LEGEND_COLOR, textSize=0.85)
     p.addUserDebugText("Bin 3 = green / large / cylinder",
-                        [0.30, 0.48, -0.10],
-                        textColorRGB=[0.8, 0.8, 0.8], textSize=0.85)
+                        [0.30, 0.48, 0.10],
+                        textColorRGB=LEGEND_COLOR, textSize=0.85)
 
 
 # ── single trial ──────────────────────────────────────────────────────
@@ -296,7 +302,7 @@ def run_trial(trial_num, irl, human, display, panda, theta_star):
         # ── PHASE 5: carry to robot's chosen bin ─────────────────────
         log(f"[PHASE 5]  carrying to Bin {robot_bin+1} (robot's choice)...")
         hover = get_hover_pos(robot_bin)
-        move(panda, hover, rotz=0.0, steps=500)
+        move(panda, hover, rotz=0.0, steps=600, gain=0.01)
         obj_carry = obj.get_world_position()
         log(f"  object pos at bin: ({obj_carry[0]:.3f},{obj_carry[1]:.3f},{obj_carry[2]:.3f})")
 
@@ -356,7 +362,7 @@ def run_trial(trial_num, irl, human, display, panda, theta_star):
         # ── PHASE 6: release ──────────────────────────────────────────
         log(f"[PHASE 6]  releasing into Bin {actual_bin+1}...")
         release = get_release_pos(actual_bin)
-        move(panda, release, rotz=0.0, steps=280, gain=0.015)
+        #move(panda, release, rotz=0.0, steps=280, gain=0.015)
         panda.open_gripper()
         settle(120)
 

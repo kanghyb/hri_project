@@ -183,5 +183,8 @@ def spawn_bins():
             vis = p.createVisualShape(p.GEOM_BOX, halfExtents=half, rgbaColor=bin_color)
             p.createMultiBody(baseMass=0, baseCollisionShapeIndex=col,
                               baseVisualShapeIndex=vis, basePosition=wpos)
-        p.addUserDebugText(labels[i], [bx, by, h + 0.06],
-                           textColorRGB=[0.9, 0.9, 0.9], textSize=1.2)
+        # Place label on the FAR face of each bin — the +x side, opposite
+        # the robot (robot sits at low x, shapes spawn between robot and bins).
+        p.addUserDebugText(labels[i],
+                           [bx + w/2 + 0.03, by, 0.04],
+                           textColorRGB=[0.05, 0.05, 0.05], textSize=1.3)
